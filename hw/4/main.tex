@@ -207,9 +207,99 @@ $\,$
 \newpage
 
 \begin{problem}{3.2}
-
-
+    Rewrite $X^{T}Xw+\lambda Iw=X^{T}y$ as $w=\frac{1}{\lambda}(X^{T}y-X^{T}Xw)$.
+    Based on this, show that we can write $w=X^{T}\alpha$ for some $\alpha$,
+    and give an expression for $\alpha$.
 \end{problem}
+\begin{solution}{}
+    Note that
+    \begin{align*}
+        w &= \frac{1}{\lambda} (X^Ty - X^TXw)\\
+        w &= \frac{1}{\lambda}X^T(y-Xw)\\
+    \end{align*}
+    Then setting $\alpha = \frac{1}{\lambda}(y-Xw)$ we have
+    \begin{align*}
+        w=X^{T}\alpha
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{3.3}
+    Based on the fact that $w=X^{T}\alpha$, explain why we say w is ``in
+    the span of the data.''
+\end{problem}
+\begin{solution}{}
+    Since $w=X^T\alpha$, we can also express $w$ as $w = \sum_{i=1}^n x_i \alpha_i$. Thus $w$ is a linear combination
+    of the training data X and as such is in the span of the training data.
+\end{solution}
+\newpage
+
+\begin{problem}{3.4}
+    Show that $\alpha=(\lambda I+XX^{T})^{-1}y$. Note that $XX^{T}$
+    is the kernel matrix for the standard vector dot product.
+\end{problem}
+\begin{solution}{}
+    Observe that
+    \begin{align*}
+        \alpha &= \frac{1}{\lambda}(y-Xw)\\
+        \alpha &= \frac{1}{\lambda}(y-XX^T\alpha)\\
+        \lambda \alpha &= y-XX^T\alpha\\
+        \lambda \alpha + XX^T\alpha &= y\\
+        (\lambda I + XX^T)\alpha &= y\\
+        \alpha &= (\lambda I + XX^T)^{-1}y
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{3.5}
+    Give a kernelized expression for the $Xw$, the predicted values on
+    the training points.
+\end{problem}
+\begin{solution}{}
+    Recall that
+    \begin{align*}
+        \alpha &= (\lambda I + XX^T)^{-1}y
+    \end{align*}
+    Then
+    \begin{align*}
+        Xw &= XX^T\alpha\\
+        &= XX^T(\lambda I + XX^T)^{-1}y \\
+        &= K(\lambda I + K)^{-1}y
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{3.6}
+     Give an expression for the prediction $f(x)=x^{T}w^{*}$ for a new
+    point $x$, not in the training set. The expression should only involve
+    $x$ via inner products with other $x$'s. {[}Hint: It is often convenient
+    to define the column vector
+    \[
+    k_{x}=\begin{pmatrix}x^{T}x_{1}\\
+    \vdots\\
+    x^{T}x_{n}
+    \end{pmatrix}
+    \]
+    to simplify the expression.{]}
+\end{problem}
+\begin{solution}{}
+    Recall that $w^* = X^T\alpha^*$ and that $\alpha^* = (\lambda I + XX^T)^{-1}y$.
+    Also note that
+    \begin{align*}
+        x^TX^T = \begin{pmatrix}x^{T}x_{1}\\
+                    \vdots\\
+                    x^{T}x_{n}
+                    \end{pmatrix} = k_x
+    \end{align*}
+    Then
+    \begin{align*}
+        f(x) &= x^Tw^*\\
+        &= x^TX^T\alpha^*\\
+        &= x^TX^T(\lambda I + XX^T)y\\
+        &= k_x(\lambda I + K)y
+    \end{align*}
+    
+\end{solution}
 
 
 
