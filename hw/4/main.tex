@@ -140,7 +140,7 @@
 \section*{2. Kernel Matrices}
 
 \begin{problem}{2.1}
-\\
+
 Consider a set of vectors $S=\{x_{1},\ldots,x_{m}\}$.
 Let $X$ denote the matrix whose rows are these vectors. Form the
 Gram matrix $K=XX^{T}$. Show that knowing $K$ is equivalent to knowing
@@ -175,7 +175,6 @@ Justify that the matrix $X^{T}X+\lambda I$ is invertible, for $\lambda>0$.
 
 \begin{solution}{}
 $\,$
-\newline
 \begin{enumerate}
     \item For $w$ to be a minimizer of $J(w)$ we must have 
     \begin{align*}
@@ -298,9 +297,87 @@ $\,$
         &= x^TX^T(\lambda I + XX^T)y\\
         &= k_x(\lambda I + K)y
     \end{align*}
-    
 \end{solution}
+\newpage
 
+\begin{problem}{4.1}
+For each $i=1,\ldots,n$, let $g_{i}(w)$ be a subgradient
+of $J_{i}(w)$ at $w\in\reals^{d}$. Let $v_{i}(w)$ be a subgradient
+of $\ell_{i}(w)$ at $w$. Give an expression for $g_{i}(w)$ in terms
+of $w$ and $v_{i}(w)$
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        g_i(w) = \lambda w + v_i(w)
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{}
+Show that $\ex g_{i}(w)\in\partial J(w)$, where the
+expectation is over the randomly selected $i\in1,\ldots,n$.
+\end{problem}
+\begin{solution}{}
+    Let $g(w)$ be a subgradient of $J(w)$ and $v_i(w)$ a subgradient of $l_i(w)$ Now observe that
+    \begin{align*}
+        g(w) &= \lambda w + \frac{1}{n}\sum_{i=1}^n v_i(w)\\
+        &= \lambda w + \ex v_i(w)
+    \end{align*}
+    And that 
+    \begin{align*}
+        \ex g_i(w) &= \ex \big( \lambda w + v_i(w) \big)\\
+        &= \lambda w + \ex v_i(w)
+    \end{align*}
+    Then $\ex g_i(w) = g(w) \in \partial J(w)$
+\end{solution}
+\newpage
+
+\begin{problem}{4.3}
+Now suppose we are carrying out SSGD with the Pegasos
+step-size $\eta^{(t)}=1/\left(\lambda t\right)$, $t=1,2,\ldots$.,
+starting from $w^{(1)}=0$. In the $t$'th step, suppose we select
+the $i$th point and thus take the step $w^{(t+1)}=w^{(t)}-\eta^{(t)}g_{i}(w^{(t)})$.
+Let's write $v^{(t)}=v_{i}(w^{(t)})$, which is the subgradient of
+the loss part of $J_{i}(w^{(t)})$ that is used in step $t$. Show
+that
+\[
+w^{(t+1)}=-\frac{1}{\lambda t}\sum_{\tau=1}^{t}v^{(\tau)}
+\]
+\end{problem}
+\begin{solution}{}
+$\,$
+    \begin{enumerate}
+        \item Base case $t=1$\\
+            Observe that
+            \begin{align*}
+                w^{(2)} &= w^{(1)} = \frac{1}{\lambda} * \lambda w^{(1)} - \frac{1}{\lambda} v^{(1)} \\
+                &=  - \frac{1}{\lambda} v^{(1)}\\
+                &=  - \frac{1}{\lambda \cdot 1} \sum_{\tau=1}^1 v^{(\tau)}\\
+                &= - \frac{1}{\lambda t} \sum_{\tau=1}^t v^{(\tau)}
+            \end{align*}
+        
+        \item Induction step.\\
+            Assume that $w^{(t)}=-\frac{1}{\lambda (t-1)}\sum_{\tau=1}^{t-1}v^{(\tau)}$. Now observe that
+            \begin{align*}
+                w^{(t+1)} &= w^{(t)} - \frac{1}{t}w^{(t)} - \frac{1}{\lambda t}v^{(t)}\\
+                &= \frac{t-1}{t}w^{(t)} - \frac{1}{\lambda t} v^{(t)}\\
+                &= -\frac{1}{\lambda t} \sum_{\tau=1}^{t-1}v^{(\tau)} - \frac{1}{\lambda t}v^{(t)}\\
+                &= -\frac{1}{\lambda t} \sum_{\tau=1}^{t}v^{(\tau)}
+            \end{align*}
+    \end{enumerate}
+\end{solution}
+\newpage
+
+\begin{problem}{4.a}
+Explain how Algorithm 1 can be implemented so that, if
+$x_{j}$ has $s$ nonzero entries, then we only need to do $O(s)$
+memory accesses in every pass through the loop.
+\end{problem}
+\begin{solution}{}
+    If we implement the algorithm with sparse matrices or dictionaries, then when computing $y_j\langle w^{(t)}, x_j \rangle$
+    and $y_jx_j$ we only need to access the $s$ nonzero elements of $x_j$ and their corresponding elements in $y_j$ and $w^{(t)}$.
+    The remaining operations are $O(1)$ and so in total we only need to do $O(s)$ memory accesses.
+\end{solution}
 
 
 
