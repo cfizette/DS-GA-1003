@@ -438,8 +438,61 @@ input, along with the labels $y_{1},\ldots,y_{n}\in\left\{ -1,1\right\}$.
         \alpha_i^{(t+1)} &= (1-\eta^{(t)}\lambda)\alpha_{i}^{(t)} +  \mathds{1}[i=j]\eta^{(t)}y_j
     \end{align*}
 \end{solution}
+\newpage
 
+% SECTION 7 --------------------------------------------------------------------------------------
+\section{7. Representer Theorem}
+\begin{problem}{7.1}
+Let $M$ be a closed subspace of a Hilbert space $\ch$. For any $x\in\ch$,
+let $m_{0}=\proj_{M}x$ be the projection of $x$ onto $M$. By the
+Projection Theorem, we know that $(x-m_{0})\perp M$. Then by the
+Pythagorean Theorem, we know $\|x\|^{2}=\|m_{0}\|^{2}+\|x-m_{0}\|^{2}$.
+From this we concluded in lecture that $\|m_{0}\|\le\|x\|$. Show
+that we have $\|m_{0}\|=\|x\|$ only when $m_{0}=x$.
+\end{problem}
+\begin{solution}{}
+    First, assume that $m_0=x$. Then clearly $\|m_{0}\|=\|x\|$.\\
+    Now it remains to show that $\|m_{0}\|\neq\|x\|$ when $m_0\neq x$.\\
+    \\
+    Assume that $m_0\neq x$. Also note that since the inner product is positive-definite,\\ $\|m_0\|^2 \neq \|x\|^2$ iff $\|m_0\| \neq \|x\|$.
+    Then
+    \begin{align*}
+        \|m_0\|^2 &= \|x-(x-m_0)\|^2\\
+        &= \|x\|^2 - \|x-m_0\|^2 && \text{Pythagorean Theorem}\\
+        &= \|x\|^2 - \langle x-m_0,x-m_0\rangle
+    \end{align*}
+    Now since $x\neq m_0$, $x-m_0\neq 0$. Then since the inner product is positive-definite,\\ $\langle x-m_0,x-m_0\rangle > 0$.
+    Thus $\|m_0\|^2 \neq \|x\|^2$ and so $\|m_0\| \neq \|x\|$.
+\end{solution}
+\newpage
 
-
+\begin{problem}{7.2}
+Give the proof of the Representer Theorem in the case that $R$ is
+strictly increasing. That is, show that if $R$ is strictly increasing,
+then all minimizers have this form claimed.
+\end{problem}
+\begin{solution}{}
+    Proof by contradiction:\\
+    \\
+    Assume $R$ is strictly increasing and $w^*$ is a minimizer of $J(w)$. Let $w_M^* = Proj_Mw$ where $M = span(x_1, \ldots, x_n)$. 
+    Note that for any $m\in M, \,\, \exists\,\, \alpha\,\, \text{such that}\,\, m=\sum_{i=1}^{n}\alpha_{i}\psi(x_{i})$. By way of contradiction 
+    also assume that $w^* \notin M$.\\
+    
+    Since $w^* \notin M$, $w^* \neq w_M^*$. Furthermore, $\|w_M^*\| < \|w^*\|$ since projections reduce norms. Since $R$ is strictly increasing, 
+    $R\big(\|w_M^*\|\big) < R\big(\|w^*\|\big)$. Now let $x\in M$ and observe that
+    \begin{align*}
+        \langle w^*,x\rangle &= \langle w_M^*+w^*-w_M^*, x\rangle\\
+        &= \langle w_M^*,x\rangle + \langle w^*-w_M^*, x\rangle\\
+        &= \langle w_M^*, x\rangle & \text{since $w^*-w_M^* \perp M$}
+    \end{align*}
+    Thus 
+    \begin{align*}
+        L\big(\langle w^*,\psi(x_1)\rangle, \ldots,\langle w^*,\psi(x_n)\rangle\big) = L\big(\langle w_M^*,\psi(x_1)\rangle, \ldots,\langle w_M^*,\psi(x_n)\rangle\big)
+    \end{align*}
+    Therefore $J(w_M^*) < J(w^*)$ and so $w^*$ is not a minimizer of $J(w)$.\\
+    
+    We have shown that when $R$ is strictly increasing, we cannot have any minimizers outside of $M$. Thus all minimizers are elements of $M$ 
+    and can be written as $w^*=\sum_{i=1}^{n}\alpha_{i}\psi(x_{i})$.
+\end{solution}
 
 \end{document}
