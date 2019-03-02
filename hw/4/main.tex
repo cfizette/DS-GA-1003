@@ -39,6 +39,8 @@
 \newcommand\hwnumber{4}                  % <-- homework number
 \newcommand\NetIDa{Cody Fizette}           % <-- NetID of person #1
 \newcommand\NetIDb{netid12038}           % <-- NetID of person #2 (Comment this line out for problem sets)
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
 
 \pagestyle{fancyplain}
 \headheight 35pt
@@ -493,6 +495,57 @@ then all minimizers have this form claimed.
     
     We have shown that when $R$ is strictly increasing, we cannot have any minimizers outside of $M$. Thus all minimizers are elements of $M$ 
     and can be written as $w^*=\sum_{i=1}^{n}\alpha_{i}\psi(x_{i})$.
+\end{solution}
+\newpage
+
+\begin{problem}{7.3}
+Suppose that $R:\reals^{\ge0}\to\reals$ and $L:\reals^{n}\to\reals$
+are both convex functions. Use properties of convex functions to \textbf{show
+that} $w\mapsto L\left(\left\langle w,\psi(x_{1})\right\rangle ,\ldots,\left\langle w,\psi(x_{n})\right\rangle \right)$
+is a convex function of $w$, and then that $J(w)$ is also a convex
+function of $w$. For simplicity, you may assume that our feature
+space is $\reals^{d}$, rather than a generic Hilbert space. You may
+also use the fact that the composition of a convex function and an
+affine function is convex. That is, suppose $f:\reals^{n}\to\reals,\ A\in\reals^{n\times m}$
+and $b\in\reals^{n}.$ Define $g:\reals^{m}\to\reals$ by $g(x)=f\left(Ax+b\right)$.
+Then if $f$ is convex, then so is $g$. From this exercise, \textbf{we
+can conclude} that if $L$ and $R$ are convex, then $J$ does have
+a minimizer of the form $w^{*}=\sum_{i=1}^{n}\alpha_{i}\psi(x_{i})$,
+and if $R$ is also strictly increasing, then all minimizers of $J$
+have this form.
+\end{problem}
+\begin{solution}{}
+    Note that in $\reals^{n}$, $\langle x,y\rangle = x^Ty = y^Tx$. Also note that since the sum of convex functions is also convex,
+    if $L\left(\left\langle w,\psi(x_{1})\right\rangle ,\ldots,\left\langle w,\psi(x_{n})\right\rangle \right)$ is convex then
+    $J(w)$ is convex.\\
+    Now observe that 
+    \begin{align*}
+        \begin{bmatrix}
+        \left\langle w,\psi(x_{1})\right\rangle\\
+        \vdots\\
+        \left\langle w,\psi(x_{n})\right\rangle
+        \end{bmatrix}
+        &= 
+        \begin{bmatrix}
+        w^T\psi(x_{1})\\
+        \vdots\\
+        w^T\psi(x_{n})
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+        \horzbar & \psi(x_{1}) & \horzbar\\
+        & \vdots\\
+        \horzbar & \psi(x_{n}) & \horzbar
+        \end{bmatrix}w
+    \end{align*}
+    Thus $\begin{bmatrix}
+        \left\langle w,\psi(x_{1})\right\rangle\\
+        \vdots\\
+        \left\langle w,\psi(x_{n})\right\rangle
+        \end{bmatrix}$
+    can be represented as an affine function of $w$.\\
+    
+    Since the composition of a convex function and an affine function is also convex,\\ $L\left(\left\langle w,\psi(x_{1})\right\rangle ,\ldots,\left\langle w,\psi(x_{n})\right\rangle \right)$ is a convex function of $w$. Therefore $J(w)$ is convex.
 \end{solution}
 
 \end{document}
