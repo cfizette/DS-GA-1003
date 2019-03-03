@@ -383,8 +383,9 @@ memory accesses in every pass through the loop.
     The remaining operations are $O(1)$ and so in total we only need to do $O(s)$ memory accesses.
 \end{solution}
 \newpage
--
-\section{5. Kernelized Pegasos}
+
+% SECTION 5 --------------------------------------------------------------------------------------
+\section*{5. Kernelized Pegasos}
 \begin{problem}{}
 Kernelize the expression for the margin. That is, show that $y_{j}\left\langle w^{(t)},x_{j}\right\rangle =y_{j}K_{j\cdot}\alpha^{(t)}$,
 where $k(x_{i},x_{j})=\left\langle x_{i},x_{j}\right\rangle $ and
@@ -442,8 +443,25 @@ input, along with the labels $y_{1},\ldots,y_{n}\in\left\{ -1,1\right\}$.
 \end{solution}
 \newpage
 
+\begin{problem}{5.4}
+While the direct implementation of the original Pegasos
+required updating all entries of $w$ in every step, a direct kernelization
+of Algorithm 2, as we have done above,
+leads to updating all entries of $\alpha$ in every step. Give a version
+of the kernelized Pegasos algorithm that does not suffer from this
+inefficiency. You may try splitting the scale and direction similar
+to the approach of the previous problem set, or you may use a decomposition
+based on Algorithm 1 from the optional
+problem 4 above.
+\end{problem}
+\begin{solution}{}
+    
+\end{solution}
+\newpage
+
+
 % SECTION 7 --------------------------------------------------------------------------------------
-\section{7. Representer Theorem}
+\section*{7. Representer Theorem}
 \begin{problem}{7.1}
 Let $M$ be a closed subspace of a Hilbert space $\ch$. For any $x\in\ch$,
 let $m_{0}=\proj_{M}x$ be the projection of $x$ onto $M$. By the
@@ -546,6 +564,92 @@ have this form.
     can be represented as an affine function of $w$.\\
     
     Since the composition of a convex function and an affine function is also convex,\\ $L\left(\left\langle w,\psi(x_{1})\right\rangle ,\ldots,\left\langle w,\psi(x_{n})\right\rangle \right)$ is a convex function of $w$. Therefore $J(w)$ is convex.
+\end{solution}
+\newpage
+
+% SECTION 8 --------------------------------------------------------------------------------------
+\section*{8. Ivanov and Tikhonov Regularization}
+\begin{problem}{8.1}
+Suppose that for some $\lambda\ge0$ we have the Tikhonov regularization
+solution
+\begin{equation}
+f^{*}\in\argmin_{f\in\cf}\left[\phi(f)+\lambda\Omega(f)\right].\label{eq:tikhonovReg}
+\end{equation}
+Show that $f^{*}$ is also an Ivanov solution. That is, $\exists r\ge0$
+such that
+\begin{equation}
+f^{*}\in\argmin_{\substack{f\in\cf}
+}\phi(f)\mbox{ subject to }\Omega(f)\le r.\label{eq:ivanovReg}
+\end{equation}
+\end{problem}
+\begin{solution}{}
+    Suppose $f^{*}\in\argmin_{f\in\cf}\left[\phi(f)+\lambda\Omega(f)\right]$ and let $r=\Omega(f^*)$. By way of contradiction, 
+    suppose that the solution to the Ivanov form is $f'\neq f^*$. Then we have 
+    \begin{align*}
+        \Omega(f') \leq r = \Omega(f^*)
+    \end{align*}
+    and
+    \begin{align*}
+        \phi(f') < \phi(f^*).
+    \end{align*}
+    Thus
+    \begin{align*}
+        \phi(f') + \lambda \Omega(f') < \phi(f^*) + \lambda \Omega(f^*).
+    \end{align*}
+    This contradicts our original assumption that $f^*$ is a minimizer of the Tikhonov problem. Thus $f'=f^*$
+    And so $f^*$ is a solution to both the Tikhonov and the Ivanov form of the problem.
+\end{solution}
+\newpage
+
+\begin{problem}{8.2.1}
+Write the Lagrangian $L(w,\lambda)$ for the Ivanov
+optimization problem.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        L(w,\lambda)=\phi(w)+\lambda(\Omega(w)-r)
+    \end{align*}
+\end{solution}
+$\,$
+
+\begin{problem}{8.2.2}
+Write the dual optimization problem in terms of the
+dual objective function $g(\lambda)$, and give an expression for
+$g(\lambda)$.
+\end{problem}
+\begin{solution}{}
+    The dual optimization problem is to find
+    \begin{align*}
+        d^*= \sup_{\lambda\succ 0} \inf_w L(w,\lambda) = \sup_{\lambda\succ 0} g(\lambda)
+    \end{align*}
+    Where $g(\lambda) = \inf_w\big(\phi(w)+\lambda(\Omega(w)-r)\big)$
+\end{solution}
+\newpage
+
+\begin{problem}{8.2.3}
+We assumed that the dual solution is attained, so let
+$\lambda^{*}\in\argmax_{\lambda\ge0}g(\lambda)$. We also assumed
+strong duality, which implies $\phi(w^{*})=g(\lambda^{*})$. Show
+that the minimum in the expression for $g(\lambda^{*})$ is attained
+at $w^{*}$.
+\textbf{Conclude the proof} by showing that for the choice of $\lambda=\lambda^{*}$,
+we have $w^{*}\in\argmin_{w\in\reals^{d}}\left[\phi(w)+\lambda^{*}\Omega(w)\right].$
+\end{problem}
+\begin{solution}{}
+    Observe that
+    \begin{align*}
+        \phi(w^*) &= g(\lambda^*)\\
+        &= \inf_w L(w,\lambda^*)\\
+        &\leq  L(w^*,\lambda^*)\\
+        &= \phi(w^*) + \lambda^*(\Omega(w^*) - r)\\
+        &\leq \phi(w^*) & \text{since $\Omega(w^*)-r\leq0$}
+    \end{align*}
+    Thus we have equality throughout the expression above and so $\inf_w L(w,\lambda^*) = L(w^*,\lambda^*)$.\\
+    We can now conclude that
+    \begin{align*}
+        w^* &= arg\,min_w\,\, \phi(w) + \lambda^*(\Omega(w)-r)\\
+        &= arg\,min_w\,\, \phi(w) + \lambda^*\Omega(w)
+    \end{align*}
 \end{solution}
 
 \end{document}
