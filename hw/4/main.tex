@@ -645,10 +645,10 @@ we have $w^{*}\in\argmin_{w\in\reals^{d}}\left[\phi(w)+\lambda^{*}\Omega(w)\righ
         &\leq \phi(w^*) & \text{since $\Omega(w^*)-r\leq0$}
     \end{align*}
     Thus we have equality throughout the expression above and so $\inf_w L(w,\lambda^*) = L(w^*,\lambda^*)$.\\
-    We can now conclude that
+    We can now conclude that, since $\phi(w^*) = \inf_w \big[\phi(w^*) + \lambda^*(\Omega(w^*) - r)\big]$,
     \begin{align*}
-        w^* &= arg\,min_w\,\, \phi(w) + \lambda^*(\Omega(w)-r)\\
-        &= arg\,min_w\,\, \phi(w) + \lambda^*\Omega(w)
+        w^* &\in arg\,min_w\,\, \phi(w) + \lambda^*(\Omega(w)-r)\\
+        &= arg\,min_w\,\, \phi(w) + \lambda^*\Omega(w).
     \end{align*}
 \end{solution}
 
