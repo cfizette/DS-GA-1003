@@ -651,5 +651,25 @@ we have $w^{*}\in\argmin_{w\in\reals^{d}}\left[\phi(w)+\lambda^{*}\Omega(w)\righ
         &= arg\,min_w\,\, \phi(w) + \lambda^*\Omega(w).
     \end{align*}
 \end{solution}
+\newpage
+
+\begin{problem}{8.3}
+ Show that the Ivanov form of ridge regression 
+\begin{eqnarray*}
+\textrm{minimize} &  & \sum_{i=1}^{n}\left(y_{i}-w^{T}x_{i}\right)^{2}\\
+\textrm{subject to} &  & w^{T}w\le r.
+\end{eqnarray*}
+ is a convex optimization problem with a strictly feasible point,
+so long as $r>0$. (Thus implying the Ivanov and Tikhonov forms of
+ridge regression are equivalent when $r>0$.)
+\end{problem}
+\begin{solution}{}
+    Assume that $r>0$.\\
+    To show that Slater's condition holds, we need to find a $w$ such that
+    \begin{align*}
+        w^Tw - r < 0
+    \end{align*}
+    Let $w=0$, then since $r>0$, we have $w^Tw - r < 0$. Thus a solution has been found and Slater's condition holds.
+\end{solution}
 
 \end{document}
