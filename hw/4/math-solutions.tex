@@ -203,7 +203,14 @@ $\,$
         w &= (X^TX + \lambda I)^{-1}X^Ty
     \end{align*}
     
-    \item TODO!!!!!!!!
+    \item Note that $X^TX$ is positive semi-definite. Let $v\in \reals{}^d$ and $\lambda \in \reals{}$ and observe that
+    \begin{align*}
+        v^T(X^TX + \lambda I)v &= v^TX^TXv + \lambda v^TX^TXv\\
+        &= v^TX^TXv + \lambda v^Tv\\
+    \end{align*}
+    But $v^TX^TXv \geq 0$ since $X^TX$ is positive semi-definite and if $v\neq 0$ then $\lambda v^Tv>0$.\\
+    Thus $v^T(X^TX + \lambda I)v > 0$ and so $X^TX+\lambda I$ is symmetric positive definite. As a result it is also 
+    inevitable.
 \end{enumerate}
 \end{solution}
 \newpage
