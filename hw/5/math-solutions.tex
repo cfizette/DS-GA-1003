@@ -271,4 +271,46 @@
     
     We have shown that all terms of the summations are equal. Thus we can conclude that $n\hat{R}_{n}(w)=\nll(w)$.
 \end{solution}
+\newpage
+
+\begin{problem}{3.2.1}
+    Show that the expression for LogSumExp is valid.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        \log(e^{x_i} + \dots e^{x_n}) &= \log(e^{x^*}(e^{x_1-x^*} + \dots e^{x_n-x^*}))\\
+        &= \log(e^{x^*}) + \log(e^{x_1-x^*} + \dots e^{x_n-x^*})\\
+        &= x^* + \log(e^{x_1-x^*} + \dots e^{x_n-x^*})
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{3.2.2}
+    Show that $\exp\left(x_{i}-x^{*}\right)\in(0,1]$ for any $i$, and thus the exp calculations will not overflow.
+\end{problem}
+\begin{solution}{}
+    Since $x^*=max(x_1, \dots x_n)$, we have $x_i-x^*\leq 0$ for all $i$. Thus $0<e^{x_i-x^*}\leq1$ for all $i$
+\end{solution}
+\newpage
+
+\begin{problem}{3.2.3}
+    Explain why the $\log$ term in our expression
+    $\log\left[e^{x_{1}-x^{*}}+\cdots+e^{x_{n}-x^{*}}\right]$ will never
+    be ``-inf''.
+\end{problem}
+\begin{solution}{}
+    Note that there exists at least one $x_i$ such that $x_i=x^*$ and that for such numbers $e^{x_i-x^*}=e^0=1$. 
+    Thus $e^{x_1-x^*} + \dots e^{x_n-x^*} > 1$. Thus $\ln(e^{x_1-x^*} + \dots e^{x_n-x^*}) > e$ and so we don't have to worry
+    about negative infinity.
+\end{solution}
+\newpage
+
+\begin{problem}{3.2.4}
+    Show how to use the numpy function\textit{ \href{https://docs.scipy.org/doc/numpy/reference/generated/numpy.logaddexp.html}{logaddexp}
+    }\textit{\emph{to correctly compute $\log\left(1+e^{-s}\right)$}}
+\end{problem}
+\begin{solution}{}
+    #TODO Triple check this\\
+    np.logaddexp(0,-s)
+\end{solution}
 \end{document}
