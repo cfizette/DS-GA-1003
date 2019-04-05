@@ -313,4 +313,155 @@
     #TODO Triple check this\\
     np.logaddexp(0,-s)
 \end{solution}
+\newpage
+
+\section*{6. Coin Flipping Maximum Likelihood}
+\begin{problem}{6.1}
+    Suppose we flip a coin and get the following sequence
+    of heads and tails:
+    \[
+    \cd=(H,H,T)
+    \]
+    Give an expression for the probability of observing $\cd$ given that
+    the probability of heads is $\theta$. That is, give an expression
+    for $p\left(\cd\mid\theta\right)$. This is called the \textbf{likelihood
+    of $\theta$ for the data $\cd$}.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        p(\cd\mid\theta) = \theta^2(1-\theta)
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{6.2}
+    How many different sequences of 3 coin tosses have
+    $2$ heads and 1 tail? If we toss the coin $3$ times, what is the
+    probability of 2 heads and $1$ tail? (Answer should be in terms of
+    $\theta$.)
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        p(2H,1T) = 3\theta^2(1-\theta)
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{6.3}
+    More generally, give an expression for the likelihood
+    $p(\cd\mid\theta)$ for a particular sequence of flips $\cd$ that
+    has $n_{h}$ heads and $n_{t}$ tails. Make sure you have expressions
+    that make sense even for $\theta=0$ and $n_{h}=0$, and other boundary
+    cases. You may use the convention that $0^{0}=1$, or you can break
+    your expression into cases if needed.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        p(\cd\mid\theta) = \theta^{n_h}(1-\theta)^{n_t}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{6.4}
+    Show that the maximum likelihood estimate of $\theta$
+    given we observed a sequence with $n_{h}$ heads and $n_{t}$ tails
+    is
+    \[
+    \hat{\theta}_{\text{MLE}}=\frac{n_{h}}{n_{h}+n_{t}}.
+    \]
+    You may assume that $n_{h}+n_{t}\ge1$. (Hint: Maximizing the log-likelihood
+    is equivalent and is often easier. )
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        \hat{\theta}_{MLE} = argmax\; \theta^{n_h}(1-\theta)^{n_t} = argmax\; n_h\ln(\theta) + n_t\ln(1-\theta)
+    \end{align*}
+    Taking the derivative and setting it to 0 we get
+    \begin{align*}
+        \frac{n_h}{\hat{\theta}} - \frac{n_t}{1-\hat{\theta}} &= 0\\
+        n_h(1-\hat{\theta}) - n_t\hat{\theta} &= 0\\
+        n_h - n_h\hat{\theta} - n_t\hat{\theta} &= 0\\
+        \hat{\theta} &= \frac{n_h}{n_h+n_t}
+    \end{align*}
+\end{solution}
+\newpage
+
+\section*{7. Coin Flipping: Bayesian Approach with Beta Prior}
+\begin{problem}{7.1}
+    Suppose that our prior distribution on $\theta$ is
+    $\mbox{Beta}(h,t)$, for some $h,t>0$. That is, $p(\theta)\propto\theta^{h-1}\left(1-\theta\right)^{t-1}$.
+    Suppose that our sequence of flips $\cd$ has $n_{h}$ heads and $n_{t}$
+    tails. Show that the posterior distribution for $\theta$ is $\mbox{Beta}(h+n_{h},t+n_{t})$.
+    That is, show that
+    \[
+    p(\theta\mid\cd)\propto\theta^{h-1+n_{h}}\left(1-\theta\right)^{t-1+n_{t}}.
+    \]
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        p(\theta) &= \theta^{h-1}(1-\theta)^{t-1}\\
+        \\
+        p(\theta\mid\cd) &\propto \p(\theta)\p(\cd\mid\theta)\\
+        &= \theta^{h-1}(1-\theta)^{t-1}\theta^{n_h}(1-\theta)^{n_t}\\
+        &= \theta^{h+n_h-1}(1-\theta)^{t+n_t-1}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{7.2}
+    Give expressions for the MLE, the MAP, and the posterior mean estimates of $\theta$.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        MLE &= \frac{n_h}{n_h+n_t}\\
+        MAP &= \frac{h+n_h-1}{h+t+n_h+n_t-2}\\
+        Posterior Mean &= \frac{h_n_h}{h+t+n_h+n_t} 
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{7.3}
+    What happens to $\hat{\theta}_{\text{MLE }}$, $\hat{\theta}_{\text{MAP}}$,
+    and $\hat{\theta}_{\text{POSTERIOR MEAN}}$ as the number of coin
+    flips $n=n_{h}+n_{t}$ approaches infinity?
+\end{problem}
+\begin{solution}{}
+    They all approach the same value. $MLE = MAP = Posterior Mean = \frac{n_h}{n_h+n_t}$
+\end{solution}
+\newpage
+
+\begin{problem}{7.4}
+    The MAP and posterior mean estimators of $\theta$
+    were derived from a Bayesian perspective. Let's now evaluate them
+    from a frequentist perspective. Suppose $\theta$ is fixed and unknown.
+    Which of the MLE, MAP, and posterior mean estimators give \textbf{unbiased}
+    estimates of $\theta$, if any?
+\end{problem}
+\begin{solution}{}
+    The MLE  is always unbiased and the MAP is unbiased only if $h=t=1$.
+    \begin{align*}
+        E(MLE) &= \frac{1}{n}E(n_h) = \frac{1}{n}n\theta = \theta\\
+        \\
+        E(MAP) &= \frac{h-1}{n+h+t-2} + \frac{n\theta}{n+h+t-2} = \theta &&\text{when $h=t=1$}\\
+        \\
+        E(Posterior Mean) &= \frac{h}{n+h+t} + \frac{n\theta}{n+h+t} \neq \theta &&\text{since $h,t>0$}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{7.5}
+     Suppose somebody gives you a coin and asks you to give
+    an estimate of the probability of heads, but you can only toss the
+    coin $3$ times. You have no particular reason to believe this is
+    an unfair coin. Would you prefer the MLE or the posterior mean as
+    a point estimate of $\theta$? If the posterior mean, what would you
+    use for your prior?
+\end{problem}
+\begin{solution}{}
+    I would prefer the posterior mean. My belief is that most coins are close to fair. With a sample size of only 3, the closest to 
+    $\theta=0.5$ we could get is $\theta=\frac{1}{3}$ or $\theta=\frac{2}{3}$. I think that it is very unlikely that even a trick coin could 
+    be that far from fair. For a prior, I would choose a Beta distribution centered at 0.5 with low variance, something like $Beta(100,100)$.
+\end{solution}
+
+
 \end{document}
