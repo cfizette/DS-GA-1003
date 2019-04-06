@@ -49,6 +49,12 @@ def get_posterior_params(X, y_train, prior, likelihood_var = 0.2**2):
     '''
     S_0 = prior['var']
     m_0 = prior['mean']
+    #pdb.set_trace()
+    '''
+    post_var_inv = S_0.getI() + likelihood_var * (X.T @ X)
+    post_var = post_var_inv.getI()
+    post_mean = post_var @ (S_0.getI() @ m_0 + likelihood_var * (X.T @ y_train))
+    '''
     post_mean = (X.T@X + likelihood_var*S_0.getI()).getI()@(X.T@y_train)
     post_var = ((1/likelihood_var)*X.T@X + S_0.getI()).getI()
     return post_mean, post_var

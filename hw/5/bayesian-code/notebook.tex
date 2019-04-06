@@ -297,10 +297,95 @@ Implement the functions in \texttt{problem} -\/- completed
 implementations of these functions are needed to generate the plots.
 
     \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{likelihood\PYZus{}func}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{likelihood\PYZus{}var}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Implement likelihood\PYZus{}func. This function returns the data likelihood}
+        \PY{l+s+sd}{    given f(y\PYZus{}train | X; w) \PYZti{} Normal(Xw, likelihood\PYZus{}var).}
+        
+        \PY{l+s+sd}{    Args:}
+        \PY{l+s+sd}{        w: Weights}
+        \PY{l+s+sd}{        X: Training design matrix with first col all ones (np.matrix)}
+        \PY{l+s+sd}{        y\PYZus{}train: Training response vector (np.matrix)}
+        \PY{l+s+sd}{        likelihood\PYZus{}var: likelihood variance}
+        
+        \PY{l+s+sd}{    Returns:}
+        \PY{l+s+sd}{        likelihood: Data likelihood (float)}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{X}\PY{n+nd}{@w}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+            \PY{k}{try}\PY{p}{:}
+                \PY{n}{likelihood} \PY{o}{=} \PY{n}{multivariate\PYZus{}normal}\PY{o}{.}\PY{n}{pdf}\PY{p}{(}\PY{n}{y\PYZus{}train}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{mean}\PY{o}{=}\PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{cov}\PY{o}{=}\PY{n}{likelihood\PYZus{}var}\PY{p}{)}
+            \PY{k}{except}\PY{p}{:}
+                \PY{n}{pdb}\PY{o}{.}\PY{n}{set\PYZus{}trace}\PY{p}{(}\PY{p}{)}
+            \PY{k}{if} \PY{o+ow}{not} \PY{n+nb}{type}\PY{p}{(}\PY{n}{likelihood}\PY{p}{)} \PY{o}{==} \PY{n}{np}\PY{o}{.}\PY{n}{float64}\PY{p}{:}
+                \PY{n}{pdb}\PY{o}{.}\PY{n}{set\PYZus{}trace}\PY{p}{(}\PY{p}{)}
+            \PY{k}{return} \PY{n}{likelihood}
+\end{Verbatim}
+
+
+    \newpage
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}posterior\PYZus{}params}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{prior}\PY{p}{,} \PY{n}{likelihood\PYZus{}var} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Implement get\PYZus{}posterior\PYZus{}params. This function returns the posterior}
+        \PY{l+s+sd}{    mean vector \PYZbs{}mu\PYZus{}p and posterior covariance matrix \PYZbs{}Sigma\PYZus{}p for}
+        \PY{l+s+sd}{    Bayesian regression (normal likelihood and prior).}
+        
+        \PY{l+s+sd}{    Note support\PYZus{}code.make\PYZus{}plots takes this completed function as an argument.}
+        
+        \PY{l+s+sd}{    Args:}
+        \PY{l+s+sd}{        X: Training design matrix with first col all ones (np.matrix)}
+        \PY{l+s+sd}{        y\PYZus{}train: Training response vector (np.matrix)}
+        \PY{l+s+sd}{        prior: Prior parameters; dict with \PYZsq{}mean\PYZsq{} (prior mean np.matrix)}
+        \PY{l+s+sd}{               and \PYZsq{}var\PYZsq{} (prior covariance np.matrix)}
+        \PY{l+s+sd}{        likelihood\PYZus{}var: likelihood variance\PYZhy{} default (0.2**2) per the lecture slides}
+        
+        \PY{l+s+sd}{    Returns:}
+        \PY{l+s+sd}{        post\PYZus{}mean: Posterior mean (np.matrix)}
+        \PY{l+s+sd}{        post\PYZus{}var: Posterior mean (np.matrix)}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{n}{S\PYZus{}0} \PY{o}{=} \PY{n}{prior}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{var}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+            \PY{n}{m\PYZus{}0} \PY{o}{=} \PY{n}{prior}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+            \PY{n}{post\PYZus{}mean} \PY{o}{=} \PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@X} \PY{o}{+} \PY{n}{likelihood\PYZus{}var}\PY{o}{*}\PY{n}{S\PYZus{}0}\PY{o}{.}\PY{n}{getI}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{getI}\PY{p}{(}\PY{p}{)}\PY{o}{@}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@y\PYZus{}train}\PY{p}{)}
+            \PY{n}{post\PYZus{}var} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{likelihood\PYZus{}var}\PY{p}{)}\PY{o}{*}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@X} \PY{o}{+} \PY{n}{S\PYZus{}0}\PY{o}{.}\PY{n}{getI}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{getI}\PY{p}{(}\PY{p}{)}
+            \PY{k}{return} \PY{n}{post\PYZus{}mean}\PY{p}{,} \PY{n}{post\PYZus{}var}
+\end{Verbatim}
+
+
+    \newpage
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}predictive\PYZus{}params}\PY{p}{(}\PY{n}{X\PYZus{}new}\PY{p}{,} \PY{n}{post\PYZus{}mean}\PY{p}{,} \PY{n}{post\PYZus{}var}\PY{p}{,} \PY{n}{likelihood\PYZus{}var} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Implement get\PYZus{}predictive\PYZus{}params. This function returns the predictive}
+        \PY{l+s+sd}{    distribution parameters (mean and variance) given the posterior mean}
+        \PY{l+s+sd}{    and covariance matrix (returned from get\PYZus{}posterior\PYZus{}params) and the}
+        \PY{l+s+sd}{    likelihood variance (default value from lecture).}
+        
+        \PY{l+s+sd}{    Args:}
+        \PY{l+s+sd}{        X\PYZus{}new: New observation (np.matrix object)}
+        \PY{l+s+sd}{        post\PYZus{}mean, post\PYZus{}var: Returned from get\PYZus{}posterior\PYZus{}params}
+        \PY{l+s+sd}{        likelihood\PYZus{}var: likelihood variance (0.2**2) per the lecture slides}
+        
+        \PY{l+s+sd}{    Returns:}
+        \PY{l+s+sd}{        \PYZhy{} pred\PYZus{}mean: Mean of predictive distribution}
+        \PY{l+s+sd}{        \PYZhy{} pred\PYZus{}var: Variance of predictive distribution}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{c+c1}{\PYZsh{}pdb.set\PYZus{}trace()}
+            \PY{n}{pred\PYZus{}mean} \PY{o}{=} \PY{n}{post\PYZus{}mean}\PY{o}{.}\PY{n}{T} \PY{o}{@} \PY{n}{X\PYZus{}new}
+            \PY{n}{pred\PYZus{}var} \PY{o}{=} \PY{n}{likelihood\PYZus{}var} \PY{o}{+} \PY{n}{X\PYZus{}new}\PY{o}{.}\PY{n}{T} \PY{o}{@} \PY{n}{post\PYZus{}var} \PY{o}{@} \PY{n}{X\PYZus{}new}
+            \PY{c+c1}{\PYZsh{}pdb.set\PYZus{}trace()}
+            \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{n}{pred\PYZus{}mean}\PY{p}{)}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{n}{pred\PYZus{}var}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}3}]:} \PY{k+kn}{from} \PY{n+nn}{support\PYZus{}code} \PY{k}{import} \PY{o}{*}
         \PY{k+kn}{from} \PY{n+nn}{problem} \PY{k}{import} \PY{o}{*}
 \end{Verbatim}
 
+
+    \newpage
 
     \subsection{Instructions (continued):}\label{instructions-continued}
 
@@ -367,7 +452,7 @@ here we wrap the loop body in a short helper function.
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -385,7 +470,7 @@ here we wrap the loop body in a short helper function.
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -403,7 +488,7 @@ here we wrap the loop body in a short helper function.
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
