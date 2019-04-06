@@ -3,6 +3,7 @@ import numpy.matlib as matlib
 from scipy.stats import multivariate_normal
 import numpy as np
 import support_code
+import pdb
 
 def likelihood_func(w, X, y_train, likelihood_var):
     '''
@@ -18,9 +19,13 @@ def likelihood_func(w, X, y_train, likelihood_var):
     Returns:
         likelihood: Data likelihood (float)
     '''
-
-    #TO DO
-
+    y_pred = np.array(X@w)[0]
+    try:
+        likelihood = multivariate_normal.pdf(y_train.flatten(), mean=y_pred, cov=likelihood_var)
+    except:
+        pdb.set_trace()
+    if not type(likelihood) == np.float64:
+        pdb.set_trace()
     return likelihood
 
 def get_posterior_params(X, y_train, prior, likelihood_var = 0.2**2):
@@ -42,9 +47,16 @@ def get_posterior_params(X, y_train, prior, likelihood_var = 0.2**2):
         post_mean: Posterior mean (np.matrix)
         post_var: Posterior mean (np.matrix)
     '''
-
-    # TO DO
-
+    S_0 = prior['var']
+    m_0 = prior['mean']
+    #pdb.set_trace()
+    '''
+    post_var_inv = S_0.getI() + likelihood_var * (X.T @ X)
+    post_var = post_var_inv.getI()
+    post_mean = post_var @ (S_0.getI() @ m_0 + likelihood_var * (X.T @ y_train))
+    '''
+    post_mean = (X.T@X + likelihood_var*S_0.getI()).getI()@(X.T@y_train)
+    post_var = ((1/likelihood_var)*X.T@X + S_0.getI()).getI()
     return post_mean, post_var
 
 def get_predictive_params(X_new, post_mean, post_var, likelihood_var = 0.2**2):
@@ -63,10 +75,11 @@ def get_predictive_params(X_new, post_mean, post_var, likelihood_var = 0.2**2):
         - pred_mean: Mean of predictive distribution
         - pred_var: Variance of predictive distribution
     '''
-
-    # TO DO
-
-    return pred_mean, pred_var
+    #pdb.set_trace()
+    pred_mean = post_mean.T @ X_new
+    pred_var = 1/likelihood_var + X_new.T @ post_var @ X_new
+    #pdb.set_trace()
+    return float(pred_mean), float(pred_var)
 
 if __name__ == '__main__':
 
@@ -96,4 +109,5 @@ if __name__ == '__main__':
                                 prior,
                                 likelihood_func,
                                 get_posterior_params,
-                                get_predictive_params)
+                                get_predictive_params,
+                                sigma_squared)

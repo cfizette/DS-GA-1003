@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy.matlib as matlib
 from scipy.stats import multivariate_normal
 import numpy as np
+import pdb
 
 '''
 This is support code provided for the Bayesian Regression Problems.
@@ -33,7 +34,7 @@ def generate_data(data_size, noise_params, actual_weights):
 
     return xtrain, ytrain
 
-def make_plots(actual_weights, xtrain, ytrain, likelihood_var, prior, likelihood_func, get_posterior_params, get_predictive_params):
+def make_plots(actual_weights, xtrain, ytrain, likelihood_var, prior, likelihood_func, get_posterior_params, get_predictive_params, plot_n):
 
     # #setup for plotting
     #
@@ -65,6 +66,7 @@ def make_plots(actual_weights, xtrain, ytrain, likelihood_var, prior, likelihood
         y_seen = ytrain[:row_num]
         mu, cov = get_posterior_params(x_seen, y_seen,
                                       prior, likelihood_var)
+        #pdb.set_trace()
         posterior_distr = multivariate_normal(mu.T.tolist()[0], cov)
         posterior_func = lambda x: posterior_distr.pdf(x)
         plt.subplot(num_rows, num_cols, first_column_pos + 1)
@@ -81,7 +83,7 @@ def make_plots(actual_weights, xtrain, ytrain, likelihood_var, prior, likelihood
         plot_predictive_distribution(get_predictive_params, post_mean, post_var)
 
     # #show the final plot
-    plt.show()
+    plt.savefig('../figures/{}.png'.format(plot_n))
 
 def plot_without_seeing_data(prior, num_rows, num_cols):
 
@@ -128,8 +130,8 @@ def contour_plot(distribution_func, actual_weights=[]):
     x_flat = x.reshape((length, 1))
     y_flat = y_train.reshape((length, 1))
     contour_points = np.c_[x_flat, y_flat]
-
     values = list(map(distribution_func, contour_points))
+    #pdb.set_trace()
     values = np.array(values).reshape(x.shape)
 
     plt.contourf(x, y_train, values)
