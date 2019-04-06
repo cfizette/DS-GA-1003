@@ -77,7 +77,7 @@ def get_predictive_params(X_new, post_mean, post_var, likelihood_var = 0.2**2):
     '''
     #pdb.set_trace()
     pred_mean = post_mean.T @ X_new
-    pred_var = 1/likelihood_var + X_new.T @ post_var @ X_new
+    pred_var = likelihood_var + X_new.T @ post_var @ X_new
     #pdb.set_trace()
     return float(pred_mean), float(pred_var)
 
