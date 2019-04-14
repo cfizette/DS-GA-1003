@@ -36,7 +36,7 @@
 
 % Edit these as appropriate
 \newcommand\course{DS-GA 1003}
-\newcommand\hwnumber{4}                  % <-- homework number
+\newcommand\hwnumber{5}                  % <-- homework number
 \newcommand\NetIDa{Cody Fizette}           % <-- NetID of person #1
 \newcommand\NetIDb{netid12038}           % <-- NetID of person #2 (Comment this line out for problem sets)
 \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
@@ -310,10 +310,69 @@
     }\textit{\emph{to correctly compute $\log\left(1+e^{-s}\right)$}}
 \end{problem}
 \begin{solution}{}
-    #TODO Triple check this\\
     np.logaddexp(0,-s)
 \end{solution}
 \newpage
+
+\section*{4. Bayesian Logistic Regression with Gaussian Priors}
+\begin{problem}{4.1}
+    For the dataset $\cd'$ described in Section 3.1,
+    give an expression for the posterior density $p(w\mid\cd')$ in terms
+    of the negative log-likelihood function
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        p(w\mid D') \propto p(w)e^{-NLL(w)}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{4.2}
+    Suppose we take a prior on $w$ of the form $w\sim\cn(0,\Sigma)$.
+    Find a covariance matrix $\Sigma$ such that MAP estimate for $w$
+    after observing data $\cd'$ is the same as the minimizer of the regularized
+    logistic regression function defined in Section 3.3
+    (and prove it).
+\end{problem}
+\begin{solution}{}
+    From section 3.3 we have
+    \begin{align*}
+        \hat{w} = \text{argmin}\;\hat{R_n}(w)+\lambda\|w\|^{2}.
+    \end{align*}
+    Now
+    \begin{align*}
+        w^* &= \text{argmax}\; p(w\mid D')\\
+        &= \text{argmax}\; p(w)e^{-NLL(w)}\\
+        &= \text{argmin}\;-\ln\left(p(w)e^{-NLL(w)}\right)\\
+        &= \text{argmin}\; \frac{1}{2}w^T\Sigma^{-1}w + NLL(w)\\
+        &= \text{argmin}\; \frac{1}{2n}w^T\Sigma^{-1}w + \hat{R_n}(w) && \text{since $NLL(w)=n\hat{R_n}(w)$}
+    \end{align*}
+    Thus
+    \begin{align*}
+        \lambda w^Tw &= \frac{1}{2n}w^T\Sigma^{-1}w\\
+        \lambda I &= \frac{1}{2n}w^T\Sigma^{-1}\\
+        \Sigma &= \frac{1}{2n\lambda}I
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{4.3}
+    In the Bayesian approach, the prior should reflect your beliefs about
+    the parameters before seeing the data and, in particular, should be
+    independent on the eventual size of your dataset. Following this,
+    you choose a prior distribution $w\sim\cn(0,I)$. For a dataset $\cd$
+    of size $n$, how should you choose $\lambda$ in our regularized
+    logistic regression objective function so that the minimizer is equal
+    to the mode of the posterior distribution of $w$ (i.e. is equal to
+    the MAP estimator).
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        \lambda = \frac{1}{2n}
+    \end{align*}
+\end{solution}
+\newpage
+
 
 \section*{6. Coin Flipping Maximum Likelihood}
 \begin{problem}{6.1}
@@ -462,6 +521,105 @@
     $\theta=0.5$ we could get is $\theta=\frac{1}{3}$ or $\theta=\frac{2}{3}$. I think that it is very unlikely that even a trick coin could 
     be that far from fair. For a prior, I would choose a Beta distribution centered at 0.5 with low variance, something like $Beta(100,100)$.
 \end{solution}
+\newpage
 
+\section*{8. Hierarchical Bayes for Click-Trhough Rate Estimation}
+\begin{problem}{8.1.1}
+     Give an expression for $p(\cd_{i}\mid\theta_{i})$, the likelihood
+    of $\cd_{i}$ given the probability of click $\theta_{i}$, in terms
+    of $\theta_{i}$, $x_{i}$ and $n_{i}$.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        p(D_i\mid\theta_i) = \theta^{x_i}(1-\theta)^{n_I-x_i}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{8.1.2}
+    We will take our prior distribution on $\theta_{i}$ to be $\mbox{Beta}(a,b)$.
+    The corresponding probability density function is given by
+    \[
+    p(\theta_{i})=\mbox{Beta}(\theta_{i};a,b)=\frac{1}{B(a,b)}\theta_{i}^{a-1}\left(1-\theta_{i}\right)^{b-1},
+    \]
+    where $B(a,b)$ is called the Beta function. Explain (without calculation)
+    why we must have
+    \[
+    \int\theta_{i}^{a-1}\left(1-\theta_{i}\right)^{b-1}\,d\theta_{i}=B(a,b).
+    \]
+\end{problem}
+\begin{solution}{}
+    The area under the PDF must equal 1.
+\end{solution}
+\newpage
+
+\begin{problem}{8.1.3}
+    Give an expression for the posterior distribution $p(\theta_{i}\mid\cd_{i})$.
+    In this case, include the constant of proportionality. In other words,
+    do not use the ``is proportional to'' sign $\propto$ in your final
+    expression.
+\end{problem}
+\begin{solution}{}
+    Note that
+    \begin{align*}
+        p(\theta_i\mid D_i) \propto \theta_i^{a+x_i-1}(1-\theta_i)^{n_i+b-x_i-1}
+    \end{align*}
+    Now
+    \begin{align*}
+        \int \theta_i^{a+x_i-1}(1-\theta_i)^{n_i+b-x_i-1} d\theta_i = B(a+x_i, n_i+b-x_i)
+    \end{align*}
+    Thus, in order to have a valid PDF,
+    \begin{align*}
+        p(\theta_i\mid D_i) = \frac{1}{B(a+x_i, n_i+b-x_i)}\theta_i^{a+x_i-1}(1-\theta_i)^{n_i+b-x_i-1}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{8.1.4}
+    Give a closed form expression for $p(\cd_{i})$, the marginal likelihood
+    of $\cd_{i}$, in terms of the $a,b,x_{i},$ and $n_{i}$. You may
+    use the normalization function $B(\cdot,\cdot)$ for convenience,
+    but you should not have any integrals in your solution.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        p(D_i) &= \int p(D_i\mid\theta_i)p(\theta_i)d\theta_i\\
+        &= \int \frac{1}{B(a,b)}\theta_i^{a+x_i-1}(1-\theta_i)^{n_i+b-x_i-1}d\theta_i\\
+        &= \frac{B(a+x_i, n_i+b-x_i)}{B(a,b)}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{8.1.4}
+    The maximum likelihood estimate for $\theta_{i}$ is $x_{i}/n_{i}$.
+    Let $p_{\text{MLE}}(\cd_{i})$ be the marginal likelihood of $\cd_{i}$
+    when we use a prior on $\theta_{i}$ that puts all of its probability
+    mass at $x_{i}/n_{i}$. Note that 
+    \begin{eqnarray*}
+    p_{\text{MLE}}(\cd_{i}) & = & p\left(\cd_{i}\mid\theta_{i}=\frac{x_{i}}{n_{i}}\right)p\left(\theta_{i}=\frac{x_{i}}{n_{i}}\right)\\
+     & = & p\left(\cd_{i}\mid\theta_{i}=\frac{x_{i}}{n_{i}}\right).
+    \end{eqnarray*}
+    Explain why, or prove, that $p_{\text{MLE}}(\cd_{i})$ is larger than
+    $p(\cd_{i})$ for any other prior we might put on $\theta_{i}$.
+\end{problem}
+\begin{solution}{}
+    By definition, $\theta_{MLE} = \frac{x_i}{n} = \text{argmax}\; p(D_i\mid\theta)$.\\
+    Thus $p(D_i\mid\theta_{MLE}) \geq p(D_i\mid\theta) \;\; \forall \;\; \theta$\\
+    Therefore $p(\cd_{i})=\int p\left(\cd_{i}\mid\theta_{i}\right)p(\theta_{i})\,d\theta_{i}$ is maximized when 
+     \[ p(\theta) =  \begin{cases} 
+      1 & \theta = \frac{x_i}{n} \\
+      0 & \text{otherwise}
+   \end{cases}
+    \]
+\end{solution}
+\newpage
+
+\begin{problem}{8.1.5}
+    Explain what's happening to the prior as we continue to increase the likelihood.
+\end{problem}
+\begin{solution}{}
+    The prior's mode approached the MLE of $\theta$ and the variance approaches 0.
+\end{solution}
+\newpage
 
 \end{document}
