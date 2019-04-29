@@ -1,0 +1,311 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{fullpage}
+\usepackage[top=2cm, bottom=4.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{dsfont}
+
+\hypersetup{%
+  colorlinks=true,
+  linkcolor=blue,
+  linkbordercolor={0 0 1}
+}
+ 
+\renewcommand\lstlistingname{Algorithm}
+\renewcommand\lstlistlistingname{Algorithms}
+\def\lstlistingautorefname{Alg.}
+
+\lstdefinestyle{Python}{
+    language        = Python,
+    frame           = lines, 
+    basicstyle      = \footnotesize,
+    keywordstyle    = \color{blue},
+    stringstyle     = \color{green},
+    commentstyle    = \color{red}\ttfamily
+}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+\newcommand\course{DS-GA 1003}
+\newcommand\hwnumber{6}                  % <-- homework number
+\newcommand\NetIDa{Cody Fizette}           % <-- NetID of person #1
+\newcommand\NetIDb{netid12038}           % <-- NetID of person #2 (Comment this line out for problem sets)
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+\pagestyle{fancyplain}
+\headheight 35pt
+\lhead{\NetIDa}
+\lhead{\NetIDa}                 % <-- Comment this line out for problem sets (make sure you are person #1)
+\chead{\textbf{\Large Homework \hwnumber}}
+\rhead{\course}
+\lfoot{}
+\cfoot{}
+\rfoot{\small\thepage}
+\headsep 1.5em
+
+\begin{document}
+\global\long\def\reals{\mathbf{R}}
+ \global\long\def\integers{\mathbf{Z}}
+\global\long\def\naturals{\mathbf{N}}
+ \global\long\def\rationals{\mathbf{Q}}
+\global\long\def\ca{\mathcal{A}}
+\global\long\def\cb{\mathcal{B}}
+ \global\long\def\cc{\mathcal{C}}
+ \global\long\def\cd{\mathcal{D}}
+\global\long\def\ce{\mathcal{E}}
+\global\long\def\cf{\mathcal{F}}
+\global\long\def\cg{\mathcal{G}}
+\global\long\def\ch{\mathcal{H}}
+\global\long\def\ci{\mathcal{I}}
+\global\long\def\cj{\mathcal{J}}
+\global\long\def\ck{\mathcal{K}}
+\global\long\def\cl{\mathcal{L}}
+\global\long\def\cm{\mathcal{M}}
+\global\long\def\cn{\mathcal{N}}
+\global\long\def\co{\mathcal{O}}
+\global\long\def\cp{\mathcal{P}}
+\global\long\def\cq{\mathcal{Q}}
+\global\long\def\calr{\mathcal{R}}
+\global\long\def\cs{\mathcal{S}}
+\global\long\def\ct{\mathcal{T}}
+\global\long\def\cu{\mathcal{U}}
+\global\long\def\cv{\mathcal{V}}
+\global\long\def\cw{\mathcal{W}}
+\global\long\def\cx{\mathcal{X}}
+\global\long\def\cy{\mathcal{Y}}
+\global\long\def\cz{\mathcal{Z}}
+\global\long\def\ind#1{1(#1)}
+\global\long\def\pr{\mathbb{P}}
+\global\long\def\var{\textrm{Var}}
+\global\long\def\cov{\textrm{Cov}}
+\global\long\def\sgn{\textrm{sgn}}
+\global\long\def\sign{\textrm{sign}}
+\global\long\def\kl{\textrm{KL}}
+\global\long\def\law{\mathcal{L}}
+\global\long\def\eps{\varepsilon}
+\global\long\def\convd{\stackrel{d}{\to}}
+\global\long\def\eqd{\stackrel{d}{=}}
+\global\long\def\del{\nabla}
+\global\long\def\loss{\ell}
+\global\long\def\tr{\operatorname{tr}}
+\global\long\def\trace{\operatorname{trace}}
+\global\long\def\diag{\text{diag}}
+\global\long\def\rank{\text{rank}}
+\global\long\def\linspan{\text{span}}
+\global\long\def\proj{\text{Proj}}
+\global\long\def\argmax{\operatornamewithlimits{arg\, max}}
+\global\long\def\argmin{\operatornamewithlimits{arg\, min}}
+\global\long\def\bfx{\mathbf{x}}
+\global\long\def\bfy{\mathbf{y}}
+\global\long\def\bfl{\mathbf{\lambda}}
+\global\long\def\bfm{\mathbf{\mu}}
+\global\long\def\calL{\mathcal{L}}
+\global\long\def\vw{\boldsymbol{w}}
+\global\long\def\vx{\boldsymbol{x}}
+\global\long\def\vxi{\boldsymbol{\xi}}
+\global\long\def\valpha{\boldsymbol{\alpha}}
+\global\long\def\vbeta{\boldsymbol{\beta}}
+\global\long\def\vsigma{\boldsymbol{\sigma}}
+\global\long\def\vmu{\boldsymbol{\mu}}
+\global\long\def\vtheta{\boldsymbol{\theta}}
+\global\long\def\vd{\boldsymbol{d}}
+\global\long\def\vs{\boldsymbol{s}}
+\global\long\def\vt{\boldsymbol{t}}
+\global\long\def\vh{\boldsymbol{h}}
+\global\long\def\ve{\boldsymbol{e}}
+\global\long\def\vf{\boldsymbol{f}}
+\global\long\def\vg{\boldsymbol{g}}
+\global\long\def\vz{\boldsymbol{z}}
+\global\long\def\vk{\boldsymbol{k}}
+\global\long\def\va{\boldsymbol{a}}
+\global\long\def\vb{\boldsymbol{b}}
+\global\long\def\vv{\boldsymbol{v}}
+\global\long\def\vy{\boldsymbol{y}}
+\global\long\def\minimizer#1{#1_{*}}
+\global\long\def\ex{\mathbb{E}}
+\global\long\def\nll{\text{NLL}}
+
+\newenvironment{solution}[2][Solution]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+
+\section*{1. Reformulations of Multiclass Hinge Loss}
+
+\begin{problem}{1.2.1}
+    Show that if $\Delta(y,y)=0$ for all $y\in\cy$, then $\ell_{2}\left(h,\left(x_{i},y_{i}\right)\right)=\text{\ensuremath{\ell}}_{1}(h,\left(x_{i},y_{i}\right))$.
+\end{problem}
+\begin{solution}{}
+    Assume $\Delta(y,y)=0$ for all $y\in\cy$, then
+    \begin{align*}
+        \ell_{2}(h,(x_{i,}y_{i}))&=\max_{y\in\cy}\left[\Delta\left(y_{i},y\right)+h(x_{i},y)-h(x_{i},y_{i})\right]\\
+        &= \max \left[\Delta\left(y_{i},y_{i}\right)+h(x_{i},y_{i})-h(x_{i},y_{i}), \max_{y\neq y_i}\left[\Delta\left(y_{i},y\right)+h(x_{i},y)-h(x_{i},y_{i})\right]\right]\\
+        &= \max \left[ 0, \max_{y\neq y_i}\left[\Delta\left(y_{i},y\right)+h(x_{i},y)-h(x_{i},y_{i})\right]\right]\\
+        &= \max_{y\neq y_i} \left[\max\left[0,\Delta\left(y_{i},y\right)+h(x_{i},y)-h(x_{i},y_{i})\right]\right]\\
+        &=  \ell_{1}(h,(x_{i,}y_{i}))
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{1.2.2.a}
+    Show that under the conditions above, $\ell_{1}(h,(x_{i},y_{i}))=\ell_{2}(h,(x_{i},y_{i}))=0$.
+\end{problem}
+\begin{solution}{}
+    Since $\Delta(y,y)=0$, $\ell_1=\ell_2$.\\
+    Also, since $m_{i,y}(h)=h(x_{i},y_{i})-h(x_{i},y)\ge\Delta(y_{i},y)$
+    \begin{align*}
+        \Delta(y_i, y) - m_{i,y}(h) = \Delta(y_i, y) + h(x_i, y) - h(x_i, y_i) \leq 0 && \forall y\neq y_{i}
+    \end{align*}
+    Then it is clear that $\ell_{1}(h,(x_{i,}y_{i})) = 0 = \ell_{2}(h,(x_{i,}y_{i}))$
+\end{solution}
+\newpage
+
+\begin{problem}{1.2.2.b}
+    Show that under the conditions above, we make the correct prediction
+    on $x_{i}$. That is, $f(x_{i})=\argmax_{y\in\cy}h(x_{i},y)=y_{i}$.
+\end{problem}
+\begin{solution}{}
+    Assume $f(x_{i})=\argmax_{y\in\cy}h(x_{i},y)\neq y_{i}$.\\
+    Then $\exists \;\; y'$ such that $h(x_{i},y') > h(x_{i},y_i)$.\\
+    Then $h(x_{i},y_i) - h(x_{i},y) < 0$. But this contradicts the fact that 
+    \begin{align*}
+        h(x_{i},y_i) - h(x_{i},y') \geq \Delta(y_i,y) > 0
+    \end{align*}
+    Thus we conclude that $f(x_{i})=\argmax_{y\in\cy}h(x_{i},y)= y_{i}$
+\end{solution}
+\newpage
+
+\section*{2. SGD for Multiclass Linear SV}
+\begin{problem}{2.2}
+    Since $J(w)$ is convex, it has a subgradient at every point. Give
+    an expression for a subgradient of $J(w)$. You may use any standard
+    results about subgradients, including the result from an earlier homework
+    about subgradients of the pointwise maxima of functions.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        \Delta J(w) &= 2\lambda w + \frac{1}{n} \sum_{i=1}^n\left[\Psi(x_i,\hat{y}_i) - \Psi(x_i,y_i)\right]
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{2.3}
+    Give an expression for the stochastic subgradient based on the point $(x_{i},y_{i})$.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        \Delta J(w) &= 2\lambda w + \Psi(x_i,\hat{y}_i) - \Psi(x_i,y_i)
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{2.4}
+    \item Give an expression for a minibatch subgradient, based on the points $(x_{i},y_{i}),\ldots,\left(x_{i+m-1},y_{i+m-1}\right)$.
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        \Delta J(w) &= 2\lambda w + \frac{1}{m} \sum_{i=1}^m\left[\Psi(x_i,\hat{y}_i) - \Psi(x_i,y_i)\right]
+    \end{align*}
+\end{solution}
+\newpage
+
+\section*{3. Hinge Loss is a Special Case of Generalized Hinge Loss}
+\begin{problem}{3}
+    Let $\cy=\left\{ -1,1\right\} $. Let $\Delta(y,\hat{y})=\ind{y\neq\hat{y}}.$
+    If $g(x)$ is the score function in our binary classification setting,
+    then define our compatibility function as 
+    \begin{eqnarray*}
+    h(x,1) & = & g(x)/2\\
+    h(x,-1) & = & -g(x)/2.
+    \end{eqnarray*}
+    Show that for this choice of $h$, the multiclass hinge loss reduces
+    to hinge loss: 
+    \[
+    \ell\left(h,\left(x,y\right)\right)=\max_{y'\in\cy}\left[\Delta\left(y,y')\right)+h(x,y')-h(x,y)\right]=\max\left\{ 0,1-yg(x)\right\} 
+    \]
+\end{problem}
+\begin{solution}{}
+    Note that
+    \begin{align*}
+        \ell\left(h,\left(x,y\right)\right) &= \max\left[\Delta\left(-1,y')\right)+h(x,y')-h(x,-1), \Delta\left(1,y')\right)+h(x,y')-h(x,1)\right]
+    \end{align*}
+    Either $y=y'$ or $y\neq y'$.\\
+    If $y=y'$, then $\ell(h,(x,y)) = 0$.\\
+    Otherwise
+    \begin{align*}
+        \ell(h,(x,y)) &= \Delta(y,y') + h(x,y') - h(x,y)\\
+        &= \left\{
+            	\begin{array}{ll}
+            		1 + g(x)  & \mbox{if } y = -1 \\
+            		1 - g(x) & \mbox{if } y = 1
+            	\end{array}
+            \right.\\
+        &= 1-yg(x)
+    \end{align*}
+    Thus $\ell\left(h,\left(x,y\right)\right) = \max\left\{ 0,1-yg(x)\right\}$
+\end{solution}
+\newpage
+
+\section*{Gradient Boosting Machines}
+\begin{problem}{7.1}
+    Consider the regression framework, where $\cy=\reals$. Suppose our
+    loss function is given by 
+    \[
+    \ell(\hat{y},y)=\frac{1}{2}\left(\hat{y}-y\right)^{2},
+    \]
+    and at the beginning of the $m$'th round of gradient boosting, we
+    have the function $f_{m-1}(x)$. Show that the $h_{m}$ chosen as
+    the next basis function is given by 
+    \[
+    h_{m}=\argmin_{h\in\cf}\sum_{i=1}^{n}\left[\left(y_{i}-f_{m-1}(x_{i})\right)-h(x_{i})\right]^{2}.
+    \]
+    In other words, at each stage we find the base prediction function
+    $h_{m}\in\cf$ that is the best fit to the residuals from the previous
+    stage.
+\end{problem}
+\begin{solution}{}
+    Note that
+    \begin{align*}
+        (g_m)_i &= \frac{\partial}{\partial f(x_i)} \sum_{j=1}^n \ell(y_j, f(x_j))\\
+        &= \frac{\partial}{\partial f(x_i)} \frac{1}{2} (y_i - f(x_i))^2\\
+        &= f(x_i) - y_i
+    \end{align*}
+    Thus $h_{m}=\argmin_{h\in\cf}\sum_{i=1}^{n}\left[\left(y_{i}-f_{m-1}(x_{i})\right)-h(x_{i})\right]^{2}$.
+\end{solution}
+\newpage
+
+\begin{problem}{7.2}
+    Now let's consider the classification framework, where $\cy=\left\{ -1,1\right\} $.
+    In lecture, we noted that AdaBoost corresponds to forward stagewise
+    additive modeling with the exponential loss, and that the exponential
+    loss is not very robust to outliers (i.e. outliers can have a large
+    effect on the final prediction function). Instead, let's consider
+    the logistic loss 
+    \[
+    \ell(m)=\ln\left(1+e^{-m}\right),
+    \]
+    where $m=yf(x)$ is the margin. Similar to what we did in the $\ell_{2}$-Boosting
+    question, write an expression for $h_{m}$ as an argmin over $\cf$.
+\end{problem}
+\begin{solution}{}
+    Note that $\ell(y, f(x))=\ln\left(1+e^{-yf(x)}\right)$.\\
+    Then
+    \begin{align*}
+        (g_m)_i &= \frac{\partial}{\partial f(x_i)} \sum_{j=1}^n \ln\left(1+e^{-y_jf(x_j)}\right)\\
+        &= \frac{\partial}{\partial f(x_i)} \ln\left(1+e^{-y_if(x_i)}\right)\\
+        &= \frac{-y_i e^{-y_if(x_i)}}{1+e^{-y_if(x_i)}}
+    \end{align*}
+    Thus $h_{m}=\argmin_{h\in\cf}\sum_{i=1}^{n}\left[\frac{-y_i e^{-y_if(x_i)}}{1+e^{-y_if(x_i)}}-h(x_{i})\right]^{2}$
+\end{solution}
+\end{document}
