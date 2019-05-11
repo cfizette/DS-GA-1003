@@ -1,0 +1,244 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{fullpage}
+\usepackage[top=2cm, bottom=4.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{dsfont}
+
+\hypersetup{%
+  colorlinks=true,
+  linkcolor=blue,
+  linkbordercolor={0 0 1}
+}
+ 
+\renewcommand\lstlistingname{Algorithm}
+\renewcommand\lstlistlistingname{Algorithms}
+\def\lstlistingautorefname{Alg.}
+
+\lstdefinestyle{Python}{
+    language        = Python,
+    frame           = lines, 
+    basicstyle      = \footnotesize,
+    keywordstyle    = \color{blue},
+    stringstyle     = \color{green},
+    commentstyle    = \color{red}\ttfamily
+}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+\newcommand\course{DS-GA 1003}
+\newcommand\hwnumber{5}                  % <-- homework number
+\newcommand\NetIDa{Cody Fizette}           % <-- NetID of person #1
+\newcommand\NetIDb{netid12038}           % <-- NetID of person #2 (Comment this line out for problem sets)
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+\pagestyle{fancyplain}
+\headheight 35pt
+\lhead{\NetIDa}
+\lhead{\NetIDa}                 % <-- Comment this line out for problem sets (make sure you are person #1)
+\chead{\textbf{\Large Homework \hwnumber}}
+\rhead{\course}
+\lfoot{}
+\cfoot{}
+\rfoot{\small\thepage}
+\headsep 1.5em
+
+\begin{document}
+\global\long\def\reals{\mathbf{R}}
+ \global\long\def\integers{\mathbf{Z}}
+\global\long\def\naturals{\mathbf{N}}
+ \global\long\def\rationals{\mathbf{Q}}
+\global\long\def\ca{\mathcal{A}}
+\global\long\def\cb{\mathcal{B}}
+ \global\long\def\cc{\mathcal{C}}
+ \global\long\def\cd{\mathcal{D}}
+\global\long\def\ce{\mathcal{E}}
+\global\long\def\cf{\mathcal{F}}
+\global\long\def\cg{\mathcal{G}}
+\global\long\def\ch{\mathcal{H}}
+\global\long\def\ci{\mathcal{I}}
+\global\long\def\cj{\mathcal{J}}
+\global\long\def\ck{\mathcal{K}}
+\global\long\def\cl{\mathcal{L}}
+\global\long\def\cm{\mathcal{M}}
+\global\long\def\cn{\mathcal{N}}
+\global\long\def\co{\mathcal{O}}
+\global\long\def\cp{\mathcal{P}}
+\global\long\def\cq{\mathcal{Q}}
+\global\long\def\calr{\mathcal{R}}
+\global\long\def\cs{\mathcal{S}}
+\global\long\def\ct{\mathcal{T}}
+\global\long\def\cu{\mathcal{U}}
+\global\long\def\cv{\mathcal{V}}
+\global\long\def\cw{\mathcal{W}}
+\global\long\def\cx{\mathcal{X}}
+\global\long\def\cy{\mathcal{Y}}
+\global\long\def\cz{\mathcal{Z}}
+\global\long\def\ind#1{1(#1)}
+\global\long\def\pr{\mathbb{P}}
+\global\long\def\var{\textrm{Var}}
+\global\long\def\cov{\textrm{Cov}}
+\global\long\def\sgn{\textrm{sgn}}
+\global\long\def\sign{\textrm{sign}}
+\global\long\def\kl{\textrm{KL}}
+\global\long\def\law{\mathcal{L}}
+\global\long\def\eps{\varepsilon}
+\global\long\def\convd{\stackrel{d}{\to}}
+\global\long\def\eqd{\stackrel{d}{=}}
+\global\long\def\del{\nabla}
+\global\long\def\loss{\ell}
+\global\long\def\tr{\operatorname{tr}}
+\global\long\def\trace{\operatorname{trace}}
+\global\long\def\diag{\text{diag}}
+\global\long\def\rank{\text{rank}}
+\global\long\def\linspan{\text{span}}
+\global\long\def\proj{\text{Proj}}
+\global\long\def\argmax{\operatornamewithlimits{arg\, max}}
+\global\long\def\argmin{\operatornamewithlimits{arg\, min}}
+\global\long\def\bfx{\mathbf{x}}
+\global\long\def\bfy{\mathbf{y}}
+\global\long\def\bfl{\mathbf{\lambda}}
+\global\long\def\bfm{\mathbf{\mu}}
+\global\long\def\calL{\mathcal{L}}
+\global\long\def\vw{\boldsymbol{w}}
+\global\long\def\vx{\boldsymbol{x}}
+\global\long\def\vxi{\boldsymbol{\xi}}
+\global\long\def\valpha{\boldsymbol{\alpha}}
+\global\long\def\vbeta{\boldsymbol{\beta}}
+\global\long\def\vsigma{\boldsymbol{\sigma}}
+\global\long\def\vmu{\boldsymbol{\mu}}
+\global\long\def\vtheta{\boldsymbol{\theta}}
+\global\long\def\vd{\boldsymbol{d}}
+\global\long\def\vs{\boldsymbol{s}}
+\global\long\def\vt{\boldsymbol{t}}
+\global\long\def\vh{\boldsymbol{h}}
+\global\long\def\ve{\boldsymbol{e}}
+\global\long\def\vf{\boldsymbol{f}}
+\global\long\def\vg{\boldsymbol{g}}
+\global\long\def\vz{\boldsymbol{z}}
+\global\long\def\vk{\boldsymbol{k}}
+\global\long\def\va{\boldsymbol{a}}
+\global\long\def\vb{\boldsymbol{b}}
+\global\long\def\vv{\boldsymbol{v}}
+\global\long\def\vy{\boldsymbol{y}}
+\global\long\def\minimizer#1{#1_{*}}
+\global\long\def\ex{\mathbb{E}}
+\global\long\def\nll{\text{NLL}}
+
+\newenvironment{solution}[2][Solution]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+
+\section*{4. Multilayer Perceptron}
+
+\begin{problem}{4.1.1.1}
+    Show that $\frac{\partial J}{\partial W_{ij}}=\frac{\partial J}{\partial y_{i}}x_{j}$,
+    where $x=\left(x_{1},\ldots,x_{d}\right)^{T}$. {[}Hint: Although
+    not necessary, you might find it helpful to use the notation $\delta_{ij}=\begin{cases}
+    1 & i=j\\
+    0 & \text{else}
+    \end{cases}$. 
+\end{problem}
+\begin{solution}{}
+    Note that 
+    \begin{align*}
+        \frac{\partial y_{r}}{\partial W_{ij}} = \delta_{rj}\frac{\partial y_{r}}{\partial W_{ij}}
+    \end{align*}
+    And
+    \begin{align*}
+        \frac{\partial y_{j}}{\partial W_{ij}} = x_j
+    \end{align*}
+    Then
+    \begin{align*}
+        \frac{\partial J}{\partial W_{ij}}&=\sum_{r=1}^{m}\frac{\partial J}{\partial y_{r}}\frac{\partial y_{r}}{\partial W_{ij}}.\\
+        &= \frac{\partial J}{\partial y_{j}}\frac{\partial y_{j}}{\partial W_{ij}}\\
+        &= \frac{\partial J}{\partial y_{j}}x_j
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{4.1.1.2}
+    Now let's vectorize this. Let's write $\frac{\partial J}{\partial y}\in\reals^{m\times1}$
+    for the column vector whose $i$th entry is $\frac{\partial J}{\partial y_{i}}$.
+    Let's also define the matrix $\frac{\partial J}{\partial W}\in\reals^{m\times d}$,
+    whose $ij$'th entry is $\frac{\partial J}{\partial W_{ij}}$. Generally
+    speaking, we'll always take $\frac{\partial J}{\partial A}$ to be
+    an array of the same size (``shape'' in numpy) as $A$. Give a vectorized
+    expression for $\frac{\partial J}{\partial W}$ in terms of the column
+    vectors $\frac{\partial J}{\partial y}$ and $x$. {[}Hint: Outer
+    product.{]} 
+\end{problem}
+\begin{solution}{}
+    \begin{align*}
+        \frac{\partial J}{\partial W} = \frac{\partial J}{\partial y} \bigotimes x
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{4.1.1.3}
+    In the usual way, define $\frac{\partial J}{\partial x}\in\reals^{d}$,
+    whose $i$'th entry is $\frac{\partial J}{\partial x_{i}}$. Show
+    that 
+    \[
+    \frac{\partial J}{\partial x}=W^{T}\left(\frac{\partial J}{\partial y}\right)
+    \]
+\end{problem}
+\begin{solution}
+    Let $W_i$ denotes the ith column of $W$.
+    
+    Then observe that
+    \begin{align*}
+        \frac{\partial J}{\partial x_i} &= \sum_{r=1}^m \frac{\partial J}{\partial y_r}\frac{\partial y_r}{\partial x_i}\\
+        &=\sum_{r=1}^m \frac{\partial J}{\partial y_r}W_{r,i}\\
+        &= \left(W_i\right)^T\frac{\partial J}{\partial y} 
+    \end{align*}
+    Thus
+    \begin{align*}
+        \frac{\partial J}{\partial x} = W^T\frac{\partial J}{\partial y}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{4.1.1.4}
+    Show that $\frac{\partial J}{\partial b}=\frac{\partial J}{\partial y}$,
+    where $\frac{\partial J}{\partial b}$ is defined in the usual way.
+\end{problem}
+\begin{solution}{}
+    Note that $\frac{\partial y}{\partial b} = 1$. Then
+    \begin{align*}
+        \frac{\partial J}{\partial b} = \frac{\partial J}{\partial y}\frac{\partial y}{\partial b} = \frac{\partial J}{\partial y}
+    \end{align*}
+\end{solution}
+\newpage
+
+\begin{problem}{4.1.2}
+    Show that $\frac{\partial J}{\partial A}=\frac{\partial J}{\partial S}\odot\sigma'(A)$,
+    where we're using $\odot$ to represent the \textbf{Hadamard product}.
+    If $A$ and $B$ are arrays of the same shape, then their Hadamard
+    product $A\odot B$ is an array with the same shape as $A$ and $B$,
+    and for which $\left(A\odot B\right)_{i}=A_{i}B_{i}$. That is, it's
+    just the array formed by multiplying corresponding elements of $A$
+    and $B$. Conveniently, in \code{numpy} if \code{A} and \code{B}
+    are arrays of the same shape, then \code{A{*}B} is their Hadamard
+    product.
+\end{problem}
+\begin{solution}{}
+    Because of how $\sigma ()$ is defined, $\frac{\partial S_i}{\partial A_i} = \sigma '(A_i)$.
+    
+    Thus $\frac{\partial J}{\partial A_i} = \frac{\partial J}{\partial S_i}\frac{\partial S_i}{\partial A_i} = \frac{\partial J}{\partial S_i}\sigma '(A_i)$.
+    
+    So then $\frac{\partial J}{\partial A}=\frac{\partial J}{\partial S}\odot \sigma '(A)$.
+\end{solution}
+\end{document}
