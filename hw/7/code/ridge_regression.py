@@ -4,6 +4,7 @@ import numpy as np
 import nodes
 import graph
 import plot_utils
+import pdb
 
 class RidgeRegression(BaseEstimator, RegressorMixin):
     """ Ridge regression with computation graph """
@@ -18,7 +19,19 @@ class RidgeRegression(BaseEstimator, RegressorMixin):
         self.b = nodes.ValueNode(node_name="b") # to hold the bias parameter (scalar)
         self.prediction = nodes.VectorScalarAffineNode(x=self.x, w=self.w, b=self.b,
                                                  node_name="prediction")
-        # TODO
+        self.square_loss = nodes.SquaredL2DistanceNode(a=self.prediction, b=self.y,
+                                                 node_name="square loss")
+        self.reg = nodes.L2NormPenaltyNode(l2_reg=l2_reg, w=self.w, node_name='l2 regularization')
+        self.objective = nodes.SumNode(a = self.square_loss, b=self.reg, node_name = 'objective function')
+
+        # Group nodes into types to construct computation graph function
+        self.inputs = [self.x]
+        self.outcomes = [self.y]
+        self.parameters = [self.w, self.b]
+
+        self.graph = graph.ComputationGraphFunction(self.inputs, self.outcomes,
+                                                          self.parameters, self.prediction,
+                                                          self.objective)
 
 
     def fit(self, X, y):

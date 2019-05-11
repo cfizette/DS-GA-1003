@@ -5,6 +5,7 @@ import numpy as np
 import nodes
 import graph
 import plot_utils
+import pdb
 #import pdb
 #pdb.set_trace()  #useful for debugging!
 
@@ -20,7 +21,22 @@ class MLPRegression(BaseEstimator, RegressorMixin):
         # Build computation graph
         self.x = nodes.ValueNode(node_name="x") # to hold a vector input
         self.y = nodes.ValueNode(node_name="y") # to hold a scalar response
-        ## TODO
+        self.b1 = nodes.ValueNode(node_name='b1')
+        self.b2 = nodes.ValueNode(node_name='b2')
+        self.W1 = nodes.ValueNode(node_name='W1')
+        self.w2 = nodes.ValueNode(node_name='w2')
+        self.L = nodes.AffineNode(W=self.W1, x=self.x, b=self.b1, node_name='L')
+        self.h = nodes.TanhNode(a=self.L, node_name='L')
+        self.prediction = nodes.AffineNode(W=self.w2, x=self.h, b=self.b2, node_name='prediction')
+        self.objective = nodes.SquaredL2DistanceNode(self.y, self.prediction, node_name='objective')
+
+        self.inputs = [self.x]
+        self.outcomes = [self.y]
+        self.parameters = [self.W1, self.b1, self.w2, self.b2]
+
+        self.graph = graph.ComputationGraphFunction(self.inputs, self.outcomes,
+                                                          self.parameters, self.prediction,
+                                                          self.objective)
 
     def fit(self, X, y):
         num_instances, num_ftrs = X.shape
@@ -28,16 +44,21 @@ class MLPRegression(BaseEstimator, RegressorMixin):
 
         ## TODO: Initialize parameters (small random numbers -- not all 0, to break symmetry )
         s = self.init_param_scale
-        init_values = None ## TODO
+        init_values = {"W1": s*np.random.randn(self.num_hidden_units,num_ftrs), 
+                       "b1": s*np.random.randn(self.num_hidden_units),
+                       "b2": s*np.random.randn(1), 
+                       "w2": s*np.random.randn(self.num_hidden_units)
+                        }
 
         self.graph.set_parameters(init_values)
 
         for epoch in range(self.max_num_epochs):
             shuffle = np.random.permutation(num_instances)
             epoch_obj_tot = 0.0
+            #pdb.set_trace()
             for j in shuffle:
                 obj, grads = self.graph.get_gradients(input_values = {"x": X[j]},
-                                                    outcome_values = {"y": y[j]})
+                                                    outcome_values = {"y": np.array([y[j]])})
                 #print(obj)
                 epoch_obj_tot += obj
                 # Take step in negative gradient direction
